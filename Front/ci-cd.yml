@@ -1,0 +1,26 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]   # Executa no push para main
+  pull_request:
+    branches: [main]   # Executa em PRs para main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      docker:
+        image: docker:20.10.16-dind
+        options: --privileged
+        ports:
+          - 2375:2375
+
+    steps:
+    - name: Checkout código
+      uses: actions/checkout@v4
+
+    - name: Build containers (frontend e backend)
+      run: |
+        docker compose build
