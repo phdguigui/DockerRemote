@@ -1,0 +1,32 @@
+services:                  # Início da definição dos serviços (containers)
+
+  frontend:
+    build:
+      context: ./Front 
+      dockerfile: Dockerfile 
+    environment:
+      - REACT_APP_API_URL=http://backend:8080
+    ports:
+      - "440:80"          # Uso a porta 440 para acessar a porta 80 exposta dentro do container (Para acesso ao container:Exposto no container)
+    depends_on:
+      - backend           # Garante que o backend suba antes do frontend
+    networks:
+      - appnet            # Conecta o serviço à rede 'appnet'
+
+  backend:
+    build:
+      context: ./Back/DockerRemote
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_URLS=http://+:5000
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "8080:5000"        # Mapeia porta 80 do host para 440 do container (.NET) (Local:Container)
+    networks:
+      - appnet             # Conecta o serviço à rede 'appnet'
+
+networks:
+  appnet:
+    driver: bridge         # Tipo de rede (bridge é padrão para containers locais)
+
+# Para rodar: docker-compose up --build

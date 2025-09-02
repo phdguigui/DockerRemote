@@ -5,9 +5,11 @@ import { useEffect, useState } from 'react';
 function App() {
   const [data, setData] = useState(null);
 
+  const apiUrl = process.env.REACT_APP_API_URL;
+
   useEffect(() => {
     // Troque a URL para seu endpoint do backend!
-    fetch('https://localhost:7114/WeatherForecast')
+    fetch(`${apiUrl}/WeatherForecast`)
       .then(response => response.json())
       .then(json => setData(json))
       .catch(err => console.error('Erro ao buscar dados:', err));
