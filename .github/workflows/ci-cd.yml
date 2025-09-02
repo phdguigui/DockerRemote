@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  show-vars:                  # Novo job só para echos
+  show-vars:                 
     runs-on: ubuntu-latest
     steps:
       - name: Echo variável
@@ -19,7 +19,7 @@ jobs:
         env:
           MY_SECRET: ${{ secrets.SECRET_TEST }}
         run: |
-          echo "Valor da secret: $MINHA_SECRET"
+          echo "Valor da secret: $MY_SECRET"
 
   build:
     runs-on: ubuntu-latest
