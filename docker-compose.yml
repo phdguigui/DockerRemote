@@ -5,7 +5,7 @@ services:                  # Início da definição dos serviços (containers)
       context: ./Front 
       dockerfile: Dockerfile 
     environment:
-      - REACT_APP_API_URL=http://backend:8080
+      - REACT_APP_API_URL=http://backend:8080 
     ports:
       - "440:80"          # Uso a porta 440 para acessar a porta 80 exposta dentro do container (Para acesso ao container:Exposto no container)
     depends_on:
