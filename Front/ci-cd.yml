@@ -2,7 +2,7 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [main]   # Executa no push para main
+    branches: [main]   # Executa no push para main 
   pull_request:
     branches: [main]   # Executa em PRs para main
 
