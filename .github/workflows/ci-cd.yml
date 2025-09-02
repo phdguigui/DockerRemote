@@ -2,11 +2,25 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [main]   # Executa no push para main 
+    branches: [main]
   pull_request:
-    branches: [main]   # Executa em PRs para main
+    branches: [main]
 
 jobs:
+  show-vars:                  # Novo job só para echos
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo variável
+        env:
+          MY_VARIABLE: ${{ vars.VARIABLE_TEST }}
+        run: |
+          echo "Valor da variável: $MY_VARIABLE"
+      - name: Echo secret
+        env:
+          MY_SECRET: ${{ secrets.SECRET_TEST }}
+        run: |
+          echo "Valor da secret: $MINHA_SECRET"
+
   build:
     runs-on: ubuntu-latest
 
@@ -18,9 +32,9 @@ jobs:
           - 2375:2375
 
     steps:
-    - name: Checkout código
-      uses: actions/checkout@v4
+      - name: Checkout código
+        uses: actions/checkout@v4
 
-    - name: Build containers (frontend e backend)
-      run: |
-        docker compose build
+      - name: Build containers (frontend e backend)
+        run: |
+          docker compose build
