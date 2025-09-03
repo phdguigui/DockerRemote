@@ -43,12 +43,14 @@ jobs:
       - name: Login no GHCR
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Tag imagens para GHCR
-        run: |
-          docker tag backend ghcr.io/${{ github.repository_owner }}/ghcr.io/phdguigui/backend-image:latest
-          docker tag frontend ghcr.io/${{ github.repository_owner }}/ghcr.io/phdguigui/frontend-image:latest
+      - name: Tag frontend para GHCR
+        run: docker tag frontend-image ghcr.io/phdguigui/frontend-image:latest
 
-      - name: Push imagens para GHCR
-        run: |
-          docker push ghcr.io/${{ github.repository_owner }}/ghcr.io/phdguigui/backend-image:latest
-          docker push ghcr.io/${{ github.repository_owner }}/ghcr.io/phdguigui/frontend-image:latest
+      - name: Push frontend para GHCR
+        run: docker push ghcr.io/phdguigui/frontend-image:latest
+
+      - name: Tag backend para GHCR
+        run: docker tag backend-image ghcr.io/phdguigui/backend-image:latest
+
+      - name: Push backend para GHCR
+        run: docker push ghcr.io/phdguigui/backend-image:latest
