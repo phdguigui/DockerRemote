@@ -1,6 +1,7 @@
 services:                  # Início da definição dos serviços (containers)
 
   frontend:
+    image: frontend-image
     build:
       context: ./Front 
       dockerfile: Dockerfile 
@@ -14,6 +15,7 @@ services:                  # Início da definição dos serviços (containers)
       - appnet            # Conecta o serviço à rede 'appnet'
 
   backend:
+    image: backend-image
     build:
       context: ./Back/DockerRemote
       dockerfile: Dockerfile

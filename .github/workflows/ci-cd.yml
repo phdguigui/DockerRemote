@@ -43,10 +43,10 @@ jobs:
 
       - name: Tag imagens para GHCR
         run: |
-          docker tag backend ghcr.io/${{ github.repository_owner }}/backend:latest
-          docker tag frontend ghcr.io/${{ github.repository_owner }}/frontend:latest
+          docker tag backend ghcr.io/${{ github.repository_owner }}/backend-image:latest
+          docker tag frontend ghcr.io/${{ github.repository_owner }}/frontend-image:latest
 
       - name: Push imagens para GHCR
         run: |
-          docker push ghcr.io/${{ github.repository_owner }}/backend:latest
-          docker push ghcr.io/${{ github.repository_owner }}/frontend:latest
+          docker push ghcr.io/${{ github.repository_owner }}/backend-image:latest
+          docker push ghcr.io/${{ github.repository_owner }}/frontend-image:latest
