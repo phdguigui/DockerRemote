@@ -32,7 +32,7 @@ jobs:
           - 2375:2375
 
     steps:
-      - name: Checkout código
+      - name: Checkout código 
         uses: actions/checkout@v4
 
       - name: Build containers (frontend e backend)
