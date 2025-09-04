@@ -1,26 +1,10 @@
-name: CI/CD Pipeline
+name: Publish Docker Images on Main
 
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
 
 jobs:
-  show-vars:                 
-    runs-on: ubuntu-latest
-    steps:
-      - name: Echo variável
-        env:
-          MY_VARIABLE: ${{ vars.VARIABLE_TEST }}
-        run: |
-          echo "Valor da variável: $MY_VARIABLE"
-      - name: Echo secret
-        env:
-          MY_SECRET: ${{ secrets.SECRET_TEST }}
-        run: |
-          echo "Valor da secret: $MY_SECRET"
-
   build-and-publish:
     runs-on: ubuntu-latest
 
@@ -31,13 +15,13 @@ jobs:
         ports:
           - 2375:2375
 
-    steps: 
-      - name: Checkout código 
+    steps:
+      - name: Checkout código
         uses: actions/checkout@v4
 
       - name: Build containers (frontend e backend)
         run: |
-          docker compose build 
+          docker compose build
           docker images
 
       - name: Login no GHCR

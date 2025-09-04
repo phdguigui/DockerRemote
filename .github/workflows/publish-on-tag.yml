@@ -1,0 +1,52 @@
+name: Publish Docker Images on Tag
+
+on:
+  push:
+    tags:
+      - 'v*'
+      
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    services:
+      docker:
+        image: docker:20.10.16-dind
+        options: --privileged
+        ports:
+          - 2375:2375
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Extrair versão da tag
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Build containers (frontend e backend)
+        run: |
+          docker compose build
+          docker images
+
+      - name: Login no GHCR
+        run: docker login ghcr.io -u phdguigui -p ${{ secrets.GHCR }}
+
+      - name: Tag frontend para GHCR
+        run: |
+          docker tag frontend-image ghcr.io/phdguigui/frontend-image:${{ env.VERSION }}
+          docker tag frontend-image ghcr.io/phdguigui/frontend-image:latest
+
+      - name: Push frontend para GHCR
+        run: |
+          docker push ghcr.io/phdguigui/frontend-image:${{ env.VERSION }}
+          docker push ghcr.io/phdguigui/frontend-image:latest
+
+      - name: Tag backend para GHCR
+        run: |
+          docker tag backend-image ghcr.io/phdguigui/backend-image:${{ env.VERSION }}
+          docker tag backend-image ghcr.io/phdguigui/backend-image:latest
+
+      - name: Push backend para GHCR
+        run: |
+          docker push ghcr.io/phdguigui/backend-image:${{ env.VERSION }}
+          docker push ghcr.io/phdguigui/backend-image:latest
