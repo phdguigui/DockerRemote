@@ -31,7 +31,7 @@ jobs:
         ports:
           - 2375:2375
 
-    steps:
+    steps: 
       - name: Checkout código 
         uses: actions/checkout@v4
 
