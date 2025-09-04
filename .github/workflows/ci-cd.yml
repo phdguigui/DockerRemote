@@ -41,10 +41,7 @@ jobs:
           docker images
 
       - name: Login no GHCR
-        run: echo "${{ secrets.GHCR }}" | docker login ghcr.io -u phdguigui --password-stdin
-
-      - name: Docker logout
-        run: docker logout ghcr.io || true
+        run: docker login ghcr.io -u phdguigui -p ${{ secrets.GHCR }}
 
       - name: Tag frontend para GHCR
         run: docker tag frontend-image ghcr.io/phdguigui/frontend-image:latest
