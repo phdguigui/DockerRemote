@@ -1,4 +1,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+LABEL org.opencontainers.image.source https://github.com/phdguigui/DockerRemote
+
 WORKDIR /app
 
 COPY . ./
