@@ -49,13 +49,21 @@ jobs:
         run: docker login ghcr.io -u phdguigui -p ${{ secrets.GHCR }}
 
       - name: Tag frontend para GHCR
-        run: docker tag frontend-image ghcr.io/phdguigui/frontend-image:latest
+        run: |
+          docker tag frontend-image ghcr.io/phdguigui/frontend-image:${{ env.VERSION }}
+          docker tag frontend-image ghcr.io/phdguigui/frontend-image:latest
 
       - name: Push frontend para GHCR
-        run: docker push ghcr.io/phdguigui/frontend-image:latest
+        run: |
+          docker push ghcr.io/phdguigui/frontend-image:latest
+          docker push ghcr.io/phdguigui/frontend-image:${{ env.VERSION }}
 
       - name: Tag backend para GHCR
-        run: docker tag backend-image ghcr.io/phdguigui/backend-image:latest
+        run: |
+          docker tag backend-image ghcr.io/phdguigui/backend-image:latest
+          docker tag backend-image ghcr.io/phdguigui/backend-image:${{ env.VERSION }}
 
       - name: Push backend para GHCR
-        run: docker push ghcr.io/phdguigui/backend-image:latest
+        run: |
+          docker push ghcr.io/phdguigui/backend-image:latest
+          docker push ghcr.io/phdguigui/backend-image:${{ env.VERSION }}
