@@ -1,7 +1,7 @@
 # Usa uma imagem oficial do Node como base para build
 FROM node:18 AS build
 
-LABEL org.opencontainers.image.source https://github.com/phdguigui/DockerRemote
+LABEL org.opencontainers.image.source=https://github.com/phdguigui/DockerRemote
 
 # Cria o diretório de trabalho
 WORKDIR /app
