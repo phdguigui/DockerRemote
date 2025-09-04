@@ -41,7 +41,7 @@ jobs:
           docker images
 
       - name: Login no GHCR
-        run: echo "${{ secrets.GHCR }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+        run: echo "${{ secrets.GHCR }}" | docker login ghcr.io -u phdguigui --password-stdin
 
       - name: Docker logout
         run: docker logout ghcr.io || true
