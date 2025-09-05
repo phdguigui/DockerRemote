@@ -1,4 +1,4 @@
-name: Publish Docker Images on Main
+name: Publish Docker Images on Main 
 
 on:
   push:
