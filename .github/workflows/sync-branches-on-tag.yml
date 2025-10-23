@@ -10,6 +10,7 @@ permissions:
 
 jobs:
   sync-branches:
+    if: false # desabilitado por ora
     runs-on: ubuntu-latest
     steps:
       - name: Checkout com histórico completo e tags
