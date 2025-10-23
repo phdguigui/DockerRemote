@@ -33,7 +33,7 @@ jobs:
         run: |
           docker build -t frontend-image --build-arg VERSION=${{ env.VERSION }} ./Front
 
-      - name: Build backend with VERSION (opcional; você disse que por ora não precisa)
+      - name: Build backend with VERSION (opcional; por ora não precisa)
         if: ${{ false }}
         run: |
           docker build -t backend-image --build-arg VERSION=${{ env.VERSION }} ./Back/DockerRemote
