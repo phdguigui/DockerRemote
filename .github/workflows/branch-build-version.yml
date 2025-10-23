@@ -47,9 +47,8 @@ jobs:
           docker build -t backend-image --build-arg VERSION=${{ env.VERSION }} ./Back/DockerRemote
 
       - name: Login no GHCR
-        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+        run: docker login ghcr.io -u phdguigui -p ${{ secrets.GHCR }}
 
       - name: Tag e push frontend para GHCR
         run: |
-          docker tag frontend-image ghcr.io/phdguigui/frontend-image:${{ env.DOCKER_TAG }}
           docker push ghcr.io/phdguigui/frontend-image:${{ env.DOCKER_TAG }}
