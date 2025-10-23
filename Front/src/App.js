@@ -36,11 +36,11 @@ function App() {
                   </li>
                 ))}
               </ul>
-              <div>versão: {process.env.REACT_APP_VERSION || "dev"}</div>
             </>
           ) : (
             <p>Carregando dados...</p>
           )}
+          <div>versão: {process.env.REACT_APP_VERSION || "dev"}</div>
         </div>
       </header>
     </div>
