@@ -37,3 +37,11 @@ jobs:
         if: ${{ false }}
         run: |
           docker build -t backend-image --build-arg VERSION=${{ env.VERSION }} ./Back/DockerRemote
+
+      - name: Login no GHCR
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Tag e push frontend para GHCR
+        run: |
+          docker tag frontend-image ghcr.io/phdguigui/frontend-image:${{ env.VERSION }}
+          docker push ghcr.io/phdguigui/frontend-image:${{ env.VERSION }}
