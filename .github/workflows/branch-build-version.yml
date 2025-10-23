@@ -23,11 +23,19 @@ jobs:
         run: |
           RAW_TAG=$(git tag -l 'v*' | sort -V | tail -n1)
           if [ -z "$RAW_TAG" ]; then RAW_TAG="v0.0.0"; fi
-          # para diferenciar builds de branch, opcionalmente adicione sufixo:
           SUFFIX="-dev+${GITHUB_SHA::7}"
-          echo "VERSION=$RAW_TAG$SUFFIX" >> $GITHUB_ENV
+          VERSION="$RAW_TAG$SUFFIX"
+
+          # Mantém VERSION para UI (pode conter '+')
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "BASE_VERSION=$RAW_TAG" >> $GITHUB_ENV
-          echo "Computed VERSION=$RAW_TAG$SUFFIX"
+
+          # Gera DOCKER_TAG seguro: minúsculo e só [a-z0-9._-]
+          SAFE_TAG=$(echo "$VERSION" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9._-]/-/g')
+          echo "DOCKER_TAG=$SAFE_TAG" >> $GITHUB_ENV
+
+          echo "Computed VERSION=$VERSION"
+          echo "Docker tag will be: $SAFE_TAG"
 
       - name: Build frontend with VERSION
         run: |
@@ -43,5 +51,5 @@ jobs:
 
       - name: Tag e push frontend para GHCR
         run: |
-          docker tag frontend-image ghcr.io/phdguigui/frontend-image:${{ env.VERSION }}
-          docker push ghcr.io/phdguigui/frontend-image:${{ env.VERSION }}
+          docker tag frontend-image ghcr.io/phdguigui/frontend-image:${{ env.DOCKER_TAG }}
+          docker push ghcr.io/phdguigui/frontend-image:${{ env.DOCKER_TAG }}
