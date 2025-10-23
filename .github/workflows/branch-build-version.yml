@@ -1,0 +1,47 @@
+name: Build (develop/release) with latest tag version
+
+on:
+  push:
+    branches: [develop, release]
+  pull_request:
+    branches: [develop, release]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (full history + tags)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch tags
+        run: git fetch --tags --force
+
+      - name: Compute VERSION from latest semver tag v*
+        shell: bash
+        run: |
+          RAW_TAG=$(git tag -l 'v*' | sort -V | tail -n1)
+          if [ -z "$RAW_TAG" ]; then RAW_TAG="v0.0.0"; fi
+          # para diferenciar builds de branch, opcionalmente adicione sufixo:
+          SUFFIX="-dev+${GITHUB_SHA::7}"
+          echo "VERSION=$RAW_TAG$SUFFIX" >> $GITHUB_ENV
+          echo "BASE_VERSION=$RAW_TAG" >> $GITHUB_ENV
+          echo "Computed VERSION=$RAW_TAG$SUFFIX"
+
+      - name: Build frontend with VERSION
+        run: |
+          docker build -t frontend-image --build-arg VERSION=${{ env.VERSION }} ./Front
+
+      - name: Build backend with VERSION (opcional; por ora não precisa)
+        if: ${{ false }}
+        run: |
+          docker build -t backend-image --build-arg VERSION=${{ env.VERSION }} ./Back/DockerRemote
+
+      - name: Login no GHCR
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Tag e push frontend para GHCR
+        run: |
+          docker tag frontend-image ghcr.io/phdguigui/frontend-image:${{ env.VERSION }}
+          docker push ghcr.io/phdguigui/frontend-image:${{ env.VERSION }}
