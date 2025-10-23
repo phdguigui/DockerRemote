@@ -1,5 +1,7 @@
 # Usa uma imagem oficial do Node como base para build
 FROM node:18 AS build
+ARG VERSION
+ENV REACT_APP_VERSION=$VERSION
 
 LABEL org.opencontainers.image.source=https://github.com/phdguigui/DockerRemote
 
@@ -31,4 +33,4 @@ EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
 
 # Build: docker build -t react-image .
-# Run: docker run -p 8080:80 react-image
+# Run: docker run -p 8080:80 react-image (Acessa localhost:8080 para acessar o 80 do container)

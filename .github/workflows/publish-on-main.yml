@@ -1,4 +1,4 @@
-name: Publish Docker Images on Main 
+name: Publish Docker Images on Main
 
 on:
   push:
@@ -6,8 +6,11 @@ on:
 
 jobs:
   build-and-publish:
+    # Roda em uma VM Ubuntu gerenciada pelo GitHub
     runs-on: ubuntu-latest
 
+    # DinD - Docker in Docker
+    # Permite executar comandos Docker dentro do pipeline
     services:
       docker:
         image: docker:20.10.16-dind
@@ -16,9 +19,11 @@ jobs:
           - 2375:2375
 
     steps:
+      # Baixa o código-fonte do repositório na VM do GitHub (para que o pipeline possa acessar os Dockerfiles)
       - name: Checkout código
         uses: actions/checkout@v4
 
+      # Roda o docker-compose para buildar as imagens
       - name: Build containers (frontend e backend)
         run: |
           docker compose build
